@@ -1,0 +1,67 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import status
+from rest_framework.viewsets import ModelViewSet
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from .choices import COURSE_TYPE_CHOICES, COURSE_CHOICES
+from .filters import OrderFilter
+from .models import Orders, Comment
+from .serializers import OrdersSerializer, CommentSerializer
+
+
+class OrdersViewSet(ModelViewSet):
+    queryset = Orders.objects.select_related('manager').all().order_by('-created_at')
+    serializer_class = OrdersSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = OrderFilter
+    ordering_fields = ["id", "name", "surname", "email", "phone", "age", "course", "course_format", "course_type",
+                       "status", "sum", "already_paid", "group", "created_at", "manager"]
+
+    @action(detail=True, methods=['post'], url_path='add-comment')
+    def add_comment(self, request, pk=None):
+        order = self.get_object()
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(order=order, author=request.user)
+
+            if not order.manager:
+                order.manager = request.user
+            if order.status in [None, "New"]:
+                order.status = "In Work"
+            order.save()
+
+            order_serializer = self.get_serializer(order)
+            return Response(order_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['delete'], url_path='comments/(?P<comment_id>[^/.]+)')
+    def delete_comment(self, request, pk=None, comment_id=None):
+        comment = get_object_or_404(Comment, id=comment_id)
+        if comment.author != request.user:
+            return Response(
+                {"detail": "You do not have permission to delete this comment."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        comment.delete()
+        return Response({"detail": "Comment deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+    @action(detail=False, methods=['get'], url_path='status-options')
+    def get_status_options(self, request):
+        return Response(dict(STATUS_CHOICES), status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='course-options')
+    def get_course_options(self, request):
+        return Response(dict(COURSE_CHOICES), status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='course-type-options')
+    def get_course_type_options(self, request):
+        return Response(dict(COURSE_TYPE_CHOICES), status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='course-format-options')
+    def get_course_format_options(self, request):
+        return Response(dict(COURSE_FORMAT_CHOICES), status=status.HTTP_200_OK)
