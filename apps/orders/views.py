@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .choices import COURSE_TYPE_CHOICES, COURSE_CHOICES
+from .choices import COURSE_TYPE_CHOICES, COURSE_CHOICES, STATUS_CHOICES, COURSE_FORMAT_CHOICES
 from .filters import OrderFilter
 from .models import Orders, Comment
 from .serializers import OrdersSerializer, CommentSerializer

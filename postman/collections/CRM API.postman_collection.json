@@ -1,0 +1,1225 @@
+{
+	"info": {
+		"_postman_id": "49977de6-97f1-4c0c-8131-243b2a567ef1",
+		"name": "CRM API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31023408",
+		"_collection_link": "https://bold-shuttle-126379.postman.co/workspace/Postman-API-Fundamentals-Studen~1e88a455-e202-4737-a079-4bb10743d733/collection/31023408-49977de6-97f1-4c0c-8131-243b2a567ef1?action=share&source=collection_link&creator=31023408"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();",
+									"pm.environment.set(\"access_token\", json.access);",
+									"pm.environment.set(\"refresh_token\", json.refresh);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/refresh/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/current-user/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"current-user",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Get Managers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/managers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"managers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Stats",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Manager",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"manager@example.com\",\n  \"name\": \"John\",\n  \"surname\": \"Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/create-manager/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"create-manager",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate Manager",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"manager_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/activate-manager/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"activate-manager",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recovery Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"manager_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/recovery-manager/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"recovery-manager",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ban Manager",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"manager_id\": 3\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/ban-manager/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"ban-manager",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unban Manager",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"manager_id\": 3\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/unban-manager/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"unban-manager",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Manager",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"manager_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/delete-manager/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"admin",
+								"delete-manager",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Get All Orders",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var accessToken = pm.environment.get(\"access_token\");\r",
+									"pm.request.headers.add({ key: \"Authorization\", value: `Bearer ${accessToken}` });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtered by Name",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders?name=Alina",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Alina"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Page 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders?page=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Status",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders?status=In Work",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "In Work"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated\",\n  \"status\": \"Aggre\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/orders/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"New comment\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/orders/1/add-comment/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"1",
+								"add-comment",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/1/comments/2/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"1",
+								"comments",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Course",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders?course=FS",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "course",
+									"value": "FS"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by Format",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders?course_format=online",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "course_format",
+									"value": "online"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by My Applications",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders?only_my_applications=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "only_my_applications",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Groups",
+			"item": [
+				{
+					"name": "Get All Groups",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/groups",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Group",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Okt\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/groups/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"groups",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Options",
+			"item": [
+				{
+					"name": "Status Options",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/status-options/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"status-options",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Options",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/course-options",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"course-options"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Type Options",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/course-type-options",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"course-type-options"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Course Format Options",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.environment.get(\"access_token\")) {",
+									"  pm.request.headers.add({",
+									"    key: \"Authorization\",",
+									"    value: \"Bearer \" + pm.environment.get(\"access_token\")",
+									"  });",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/orders/course-format-options",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"course-format-options"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
