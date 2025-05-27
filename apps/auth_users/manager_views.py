@@ -7,7 +7,7 @@ from apps.auth_users.serializers import ManagerSerializer
 
 
 class ManagerViewSet(ReadOnlyModelViewSet):
-    queryset = CustomUser.objects.filter(role="manager").annotate(
+    queryset = CustomUser.objects.all().annotate(
         total_orders=Count("orders"),
         in_work_orders=Count("orders", filter=Q(orders__status="In Work"))
     )
