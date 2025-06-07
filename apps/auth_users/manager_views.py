@@ -1,9 +1,9 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from rest_framework.permissions import IsAdminUser
 from django.db.models import Count, Q
 
 from apps.auth_users.models import CustomUser
 from apps.auth_users.serializers import ManagerSerializer
+from core.permissions.is_admin_and_is_manager_permission import IsAdmin
 
 
 class ManagerViewSet(ReadOnlyModelViewSet):
@@ -12,4 +12,4 @@ class ManagerViewSet(ReadOnlyModelViewSet):
         in_work_orders=Count("orders", filter=Q(orders__status="In Work"))
     )
     serializer_class = ManagerSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]

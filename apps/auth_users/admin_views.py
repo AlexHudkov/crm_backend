@@ -1,5 +1,4 @@
 from django.db.models import Count
-from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
@@ -7,11 +6,12 @@ from django.shortcuts import get_object_or_404
 
 from apps.auth_users.models import CustomUser
 from apps.auth_users.serializers import ManagerSerializer
+from core.permissions.is_admin_and_is_manager_permission import IsAdmin
 from core.services.jwt_service import JWTService, ActivateToken, RecoveryToken
 
 
 class CreateManagerView(CreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
     queryset = CustomUser.objects.all()
     serializer_class = ManagerSerializer
 
@@ -22,7 +22,7 @@ class CreateManagerView(CreateAPIView):
 
 
 class AdminStatsView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
 
     def get(self, request):
         from apps.orders.models import Orders
@@ -31,7 +31,7 @@ class AdminStatsView(APIView):
 
 
 class ActivateManagerLinkView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
 
     def post(self, request):
         manager = get_object_or_404(CustomUser, id=request.data["manager_id"])
@@ -40,7 +40,7 @@ class ActivateManagerLinkView(APIView):
 
 
 class RecoveryManagerLinkView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
 
     def post(self, request):
         manager = get_object_or_404(CustomUser, id=request.data["manager_id"])
@@ -49,7 +49,7 @@ class RecoveryManagerLinkView(APIView):
 
 
 class BanManagerView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
 
     def post(self, request):
         manager = get_object_or_404(CustomUser, id=request.data["manager_id"])
@@ -59,7 +59,7 @@ class BanManagerView(APIView):
 
 
 class UnbanManagerView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
 
     def post(self, request):
         manager = get_object_or_404(CustomUser, id=request.data["manager_id"])
@@ -69,7 +69,7 @@ class UnbanManagerView(APIView):
 
 
 class DeleteManagerView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdmin]
 
     def post(self, request):
         manager = get_object_or_404(CustomUser, id=request.data["manager_id"])

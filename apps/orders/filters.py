@@ -21,7 +21,7 @@ class OrderFilter(django_filters.FilterSet):
 
     def filter_status(self, queryset, name, value):
         if value == "New":
-            return queryset.filter(Q(status="New") | Q(status__isnull=True))
+            return queryset.filter(Q(status="New"))
         return queryset.filter(status=value)
 
     def filter_start_date(self, queryset, name, value):

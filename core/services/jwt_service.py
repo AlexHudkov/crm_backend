@@ -1,6 +1,8 @@
 from datetime import timedelta
 from rest_framework_simplejwt.tokens import RefreshToken, Token
 
+from apps.tokens.models import UsedToken
+
 
 class JWTService:
     @staticmethod
@@ -20,7 +22,12 @@ class JWTService:
     @staticmethod
     def verify_token(token, token_class=None):
         try:
-            return token_class(token)
+            decoded = token_class(token)
+
+            if UsedToken.objects.filter(jti=decoded["jti"]).exists():
+                raise ValueError("This token has already been used")
+
+            return decoded
         except Exception as e:
             raise ValueError(f"Invalid token: {e}")
 

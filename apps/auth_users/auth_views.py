@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 from apps.auth_users.serializers import EmailSerializer, PasswordSerializer
+from apps.tokens.models import UsedToken
 from core.services.jwt_service import JWTService, RecoveryToken, ActivateToken
 from django.contrib.auth import get_user_model
 from rest_framework import status
@@ -31,9 +32,14 @@ class ActivateUserView(GenericAPIView):
 
     def post(self, *args, **kwargs):
         token = kwargs['token']
-        user = JWTService.verify_token(token, ActivateToken)
+        decoded = JWTService.verify_token(token, ActivateToken)
+
+        user = User.objects.get(id=decoded["user_id"])
         user.is_active = True
         user.save()
+
+        UsedToken.objects.create(jti=decoded["jti"])
+
         return Response({'detail': 'Activated'}, status.HTTP_200_OK)
 
 
@@ -74,6 +80,8 @@ class RecoverPasswordView(GenericAPIView):
         user.set_password(serializer.validated_data["password"])
         user.is_active = True
         user.save()
+
+        UsedToken.objects.create(jti=decoded["jti"])
 
         return Response({"detail": "Password was set"}, status=status.HTTP_200_OK)
 

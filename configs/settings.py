@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.groups',
     'apps.orders',
     'apps.users',
+    'apps.tokens',
 ]
 
 MIDDLEWARE = [
@@ -177,4 +178,3 @@ APPEND_SLASH = True
 
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 CORS_ALLOW_HEADERS = ["authorization", "content-type"]
-
