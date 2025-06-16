@@ -3,7 +3,9 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework_simplejwt.tokens import RefreshToken
 
+from apps.auth_users.auth_serializers import LoginSerializer
 from apps.auth_users.serializers import EmailSerializer, PasswordSerializer
 from apps.tokens.models import UsedToken
 from core.services.jwt_service import JWTService, RecoveryToken, ActivateToken
@@ -12,6 +14,22 @@ from rest_framework import status
 
 UserModel = get_user_model()
 User = get_user_model()
+
+
+class LoginView(GenericAPIView):
+    serializer_class = LoginSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data["user"]
+
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+        })
 
 
 class CurrentUserView(GenericAPIView):

@@ -20,13 +20,16 @@ class PasswordSerializer(serializers.ModelSerializer):
 class ManagerSerializer(serializers.ModelSerializer):
     total_orders = serializers.IntegerField(read_only=True)
     in_work_orders = serializers.IntegerField(read_only=True)
+    aggre_orders = serializers.IntegerField(read_only=True)
+    disaggre_orders = serializers.IntegerField(read_only=True)
+    dubbing_orders = serializers.IntegerField(read_only=True)
     last_login_formatted = serializers.SerializerMethodField()
     has_password = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
         fields = ["id", "email", "name", "surname", "is_active", "last_login", "last_login_formatted", "total_orders",
-                  "in_work_orders", "has_password"]
+                  "in_work_orders", "aggre_orders", "disaggre_orders", "dubbing_orders", "has_password"]
 
     def get_has_password(self, obj):
         return obj.has_usable_password()

@@ -5,14 +5,14 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from apps.auth_users.admin_views import CreateManagerView, AdminStatsView, ActivateManagerLinkView, \
     RecoveryManagerLinkView, BanManagerView, UnbanManagerView, DeleteManagerView
 from apps.auth_users.auth_views import ActivateUserView, RecoveryPasswordRequestView, RecoverPasswordView, SocketView, \
-    CurrentUserView
+    CurrentUserView, LoginView
 from apps.auth_users.manager_views import ManagerViewSet
 
 router = DefaultRouter()
 router.register(r'admin/managers', ManagerViewSet, basename='admin-managers')
 
 urlpatterns = [
-    path('', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('', LoginView.as_view(), name='login'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # AUTH

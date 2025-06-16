@@ -29,7 +29,7 @@ class OrdersViewSet(ModelViewSet):
     def add_comment(self, request, pk=None):
         order = self.get_object()
 
-        if order.manager and order.manager != request.user and request.user.role != "admin":
+        if order.manager and order.manager != request.user:
             return Response({"detail": "You are not allowed to comment on this order."}, status=403)
 
         serializer = CommentSerializer(data=request.data)
@@ -49,7 +49,7 @@ class OrdersViewSet(ModelViewSet):
     @action(detail=True, methods=['delete'], url_path='comments/(?P<comment_id>[^/.]+)')
     def delete_comment(self, request, pk=None, comment_id=None):
         comment = get_object_or_404(Comment, id=comment_id)
-        if comment.author != request.user and request.user.role != "admin":
+        if comment.author != request.user:
             return Response(
                 {"detail": "You do not have permission to delete this comment."},
                 status=status.HTTP_403_FORBIDDEN,
@@ -114,6 +114,12 @@ class OrdersViewSet(ModelViewSet):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data.copy()
+
+        if instance.manager and instance.manager != request.user:
+            return Response(
+                {"detail": "You are not allowed to edit this order."},
+                status=status.HTTP_403_FORBIDDEN
+            )
 
         if data.get("status") == "New":
             data["manager"] = None
